@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('backup') {
+            steps {
+                script {
+                def backupDir = "${JENKINS_HOME}/backups"
+                def date = new Date().format("yyyyMMdd_HHmmss")
+                def backupFile = "jenkins-backup-${date}.tar.gz"
+                sh "mkdir -p ${backupDir}"
+                sh "tar -czf ${backupDir}/${backupFile} ${JENKINS_HOME}"
+                }
+            }
+            post {
+                success {
+                    echo "Backing up jenkins"
+                    echo "Jenkins backup successful: ${backupDir}/${backupFile}"
+                
+                }
+                failure {
+                    echo 'Jenkins backup failed!'
+                }
+            }
+        }
+    }
+}
