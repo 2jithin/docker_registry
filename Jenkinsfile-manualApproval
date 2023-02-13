@@ -20,13 +20,14 @@ pipeline {
     dockertag = "${env.BUILD_NUMBER}"
     containername = "apachehttpd"
     }
-    options([
+    options {
         parameters([
                 choice(choices: 'sprint_6\nsprint_7\nsprint_8\nSprint_9', description: 'Select branch to Build', name: 'Branch'),
                 choice(choices: 'No\nYes', , name: 'choice2'),
                 choice(choices: 'No\nYes', name: 'choice3')
         ])
-        ])
+        disableConcurrentBuilds()
+    }
     stages {
         stage('DockerBuild') {
             steps {
