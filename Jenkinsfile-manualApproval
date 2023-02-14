@@ -11,7 +11,8 @@
 //         choice(choices: 'No\nYes', name: 'choice3')
 //   ])
 // ])
-
+def branchname = null
+def userInput = true
 pipeline {
     agent any
     environment {
@@ -30,7 +31,7 @@ pipeline {
             steps {
                 script {
                     echo " ========= Starting docker ========="
-                    sh 'docker build -t $dockerImageName/$BUILD_NUMBER:latest -f Dockerfile_alphine .'
+                    sh 'docker build -t $dockerImageName/$BUILD_NUMBER:latest -f Dockerfile-alphine .'
                     sh 'docker inspect apachehttpd >/dev/null 2>&1 || { echo "Failed to inspect Docker image"; exit 1; }'
                     // Verify that the image has the expected properties
                     def imageInfo = sh(script: 'docker inspect apachehttpd', returnStdout: true).trim()
@@ -42,22 +43,21 @@ pipeline {
             }
         }
         stage('deploy') {
-            steps {
+            steps { 
                 script {
-                    timeout(time: 600, unit: 'SECONDS') {
-                    def userInput = input(
-                        message: 'Do you approve the deployment?',
-                        parameters: [
-                            booleanParam(defaultValue: true, description: 'Approve?', name: 'APPROVE')
-                        ]
-                    )
-                    if (!userInput.APPROVE) {
-                        error('Deployment not approved!')
-                    } else if (userInput.APPROVE) {
-                        sh 'docker run -d --name $containername$BUILD_NUMBER -p 100:80 $dockerImageName/$BUILD_NUMBER'
-                    } else {
-                        echo "Timeout"
-                    }
+                    timeout(time: 30, unit: 'SECONDS') {
+                        userInput = input(
+                        id: 'Proceed1', message: 'Was this successful?', parameters: [
+                        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please-confirmPlease confirm you agree with this']
+                        ])
+                        if (userInput == true) {
+                            echo "Deploying Docker"
+                            //sh 'docker run -d --name apachectest -p 80:80 apache/$BUILD_NUMBER' 
+                        } else {
+                            error('Deployment not approved!')
+                            userInput = false
+                            echo "Aborted by: [${user}]" 
+                        }  
                     }
                     // def approval = input message: 'Deploy to container?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Approve deployment to container?']]
                     // if (!approval) {
