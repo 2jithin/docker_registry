@@ -1,3 +1,6 @@
+def backupDir = "${JENKINS_HOME}/backups/"
+def dateformat = new Date().format("yyyyMMdd_HHmmss")
+def backupFile = "jenkins-backup-${dateformat}.tar.gz"
 pipeline {
     agent any
     options {
@@ -10,9 +13,7 @@ pipeline {
         stage('backup') {
             steps {
                 script {
-                def backupDir = "${JENKINS_HOME}/backups/"
-                def dateformat = new Date().format("yyyyMMdd_HHmmss")
-                def backupFile = "jenkins-backup-${dateformat}.tar.gz"
+
                 sh "mkdir -p ${backupDir}"
                 sh 'cd /var/lib/jenkins/backups/'
                 sh "tar -zcf ${backupFile} -P ${JENKINS_HOME} || true"
