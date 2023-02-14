@@ -22,7 +22,7 @@ pipeline {
                 script {
                     echo "=== initialize the docker Registry ==="
                     //sh "echo '${containername}'"
-                    sh "docker login -u jithincm -p ${env.reg_password}"
+                    sh "docker login -u jithincm -p $reg_password"
                 }
             }
         }
