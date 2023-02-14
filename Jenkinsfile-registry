@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build_Docker_Image') {
+            steps {
+                script {
+                    echo "=== initialize the docker image Build ==="
+                    sh 'docker build -t $dockerImageName/$BUILD_NUMBER:latest -f Dockerfile-alphine .'
+                    
+                }
+            }
+        }
+        stage('Login_Docker_Registry') {
+            steps {
+                script {
+                    echo "=== initialize the docker Registry ==="
+                    
+                }
+            }
+        }
+        stage('Push_Docker_Image') {
+            steps {
+                script {
+                    echo "=== initialize the docker push Image ==="
+                    
+                }
+            }
+        }    
+    }
+}
