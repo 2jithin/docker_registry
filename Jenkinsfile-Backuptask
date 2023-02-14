@@ -15,7 +15,7 @@ pipeline {
                 def backupFile = "jenkins-backup-${date}.tar.gz"
                 sh "mkdir -p ${backupDir}"
                 sh 'cd /var/lib/jenkins/backups/'
-                sh "tar -zcf ${backupDir}${backupFile} -P ${JENKINS_HOME}"
+                sh "tar -zcf ${backupFile} -P ${JENKINS_HOME}"
                 
                 //sh 'tar -czf /var/lib/jenkins/backups/jenkins-backup-20230214_110032.tar.gz /var/lib/jenkins'
                 //sh 'tar: Removing leading `/' from member names'
