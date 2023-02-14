@@ -5,6 +5,7 @@ pipeline {
         dockerbuildversion = "$dockerImageName:v$BUILD_NUMBER"
         dockertag = "${env.BUILD_NUMBER}"
         containername = "apachehttpd"
+        reg_password = sh(script: 'echo "ZGNrcl9wYXRfWHNqZjJfR3hsajgzY0RFN05mVC11UDNscFZj" | base64Decode', returnStdout: true, returnStatus: true)
     }
     stages {
         stage('Build_Docker_Image') {
@@ -20,7 +21,8 @@ pipeline {
             steps {
                 script {
                     echo "=== initialize the docker Registry ==="
-                    sh 'docker login -u jithincm -p dckr_pat_Xsjf2_Gxlj83cDE7NfT-uP3lpVc'
+                    echo "$reg_password"
+                    sh "docker login -u jithincm -p dckr_pat_Xsjf2_Gxlj83cDE7NfT-uP3lpVc"
                 }
             }
         }
