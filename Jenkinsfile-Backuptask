@@ -20,7 +20,7 @@ pipeline {
                 
                 echo "Backedup Files in the directory"
 
-                sh 'ls ${backupDir}'                
+                sh 'ls -a'                
                 //sh 'tar -czf /var/lib/jenkins/backups/jenkins-backup-20230214_110032.tar.gz /var/lib/jenkins'
                 //sh 'tar: Removing leading `/' from member names'
                 // sudo tar -cvzf test.tar.gz /opt/stagecoach/apps/test/current
