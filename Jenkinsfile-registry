@@ -21,8 +21,8 @@ pipeline {
             steps {
                 script {
                     echo "=== initialize the docker Registry ==="
-                    echo "$reg_password"
-                    sh "docker login -u jithincm -p dckr_pat_Xsjf2_Gxlj83cDE7NfT-uP3lpVc"
+                    sh 'echo containername'
+                    //sh "docker login -u jithincm -p <>"
                 }
             }
         }
