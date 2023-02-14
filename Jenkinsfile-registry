@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        dockerImageName = "simpleapachehttp"
+        dockerbuildversion = "$dockerImageName:v$BUILD_NUMBER"
+        dockertag = "${env.BUILD_NUMBER}"
+        containername = "apachehttpd"
+    }
     stages {
         stage('Build_Docker_Image') {
             steps {
@@ -14,15 +20,23 @@ pipeline {
             steps {
                 script {
                     echo "=== initialize the docker Registry ==="
-                    
+                    sh 'docker login -u jithincm -p dckr_pat_Xsjf2_Gxlj83cDE7NfT-uP3lpVc'
                 }
             }
         }
+        stage('Tag_Docker_Image') {
+            steps {
+                script {
+                    echo "=== initialize the docker tagging Image ==="
+                    sh 'docker tag $dockerImageName/$BUILD_NUMBER:latest jithincm/apachehttpd'                  
+                }
+            }
+        }        
         stage('Push_Docker_Image') {
             steps {
                 script {
                     echo "=== initialize the docker push Image ==="
-                    
+                    sh 'docker push jithincm/apachehttpd'                   
                 }
             }
         }    
