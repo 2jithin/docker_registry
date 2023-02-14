@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     echo "=== initialize the docker Registry ==="
-                    sh 'echo containername'
+                    sh 'echo ${containername}'
                     //sh "docker login -u jithincm -p <>"
                 }
             }
