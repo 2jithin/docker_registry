@@ -21,8 +21,12 @@ pipeline {
             steps {
                 script {
                     echo "=== initialize the docker Registry ==="
+                    withCredentials([gitUsernamePassword(credentialsId: 'dockerregistry', gitToolName: 'Default')]) {
+                        sh 'docker login -u jithincm -p $dockerregistry'
+                    // some block
+                    }
                     //sh "echo '${containername}'"
-                    sh "docker login -u jithincm -p $reg_password"
+                    //sh "docker login -u jithincm -p $reg_password"
                 }
             }
         }
