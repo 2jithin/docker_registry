@@ -4,19 +4,21 @@ pipeline {
         stage('Hello') {
             steps {
                 echo "This pipeline is for jenkins mail notification for all build "
-                echo '${currentBuild.currentResult}: Job ${env.JOB_NAME}\\nMore Info can be found here: ${env.BUILD_URL}'
-                echo 'jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}'
+                echo "==================="
+                echo "$currentBuild.currentResult: Job $JOB_NAME\\nMore Info can be found here: $BUILD_URL"
+                echo "==================="
+                echo "jenkins build:$currentBuild.currentResult: $JOB_NAME"
                 }
             }
         }
     post{
         always{
-            mail(body: '${currentBuild.currentResult}: Job ${env.JOB_NAME}\\nMore Info can be found here: ${env.BUILD_URL}', subject: 'jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}', to: 'jithincotp@gmail.com')
+            mail(body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\\nMore Info can be found here: ${env.BUILD_URL}", subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}", to: 'jithincotp@gmail.com')
 
             cleanWs()
         }
         failure{
-            mail bcc: '', body: '${currentBuild.currentResult}: Job ${env.JOB_NAME}\\nMore Info can be found here: ${env.BUILD_URL}', cc: '', from: '', replyTo: '', subject: 'jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}', to: 'jithincotp@gmail.com'
+            mail(body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\\nMore Info can be found here: ${env.BUILD_URL}", subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}", to: 'jithincotp@gmail.com')
         }
     }
 }
