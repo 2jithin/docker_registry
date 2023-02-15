@@ -1,0 +1,24 @@
+#!groovy
+#!/usr/bin/env groovy
+
+pipeline {
+  agent {
+    label 'docker'  # separate agent (launched as JAR on host machine) to avoid running docker inside docker
+  }
+  stages {
+    stage('Agent') {
+        echo "simple steps to show working in docker agent"
+        sh 'hostname'        
+    }
+  	// stage('Install') {
+    // 	agent {
+    //   	docker {
+    //     	image 'nginx:latest'
+    //     }
+    //   }
+    //   steps {
+    //   	echo "simple steps to show working in docker agent"
+    //   }
+    // }
+  }
+}

@@ -1,0 +1,53 @@
+#!groovy
+
+pipeline {
+  agent any
+  environment {
+    dockerpasswd = ""
+  }
+  stages {
+    stage('Build_Docker_Image') {
+      steps {
+        script {
+          echo "=== initialize the docker image Build ==="
+
+          sh 'docker build -t $dockerImageName/$BUILD_NUMBER:latest -f Dockerfile-alphine .'
+
+        }
+      }
+    }
+    stage('Install_CLI') {
+      steps {
+        script {
+          echo "=== initialize the docker Registry ==="
+          
+        }
+      }
+    }
+      stage('Login_Docker_Registry') {
+        steps {
+          script {
+            echo "=== initialize the docker Registry ==="
+            //withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+            // sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+            // sh 'docker push shanem/spring-petclinic:latest'
+            aws ecr - public get - login - password--region us - east - 1 | docker login--username AWS--password - stdin public.ecr.aws / s1w0y8e8
+          }
+
+        }
+      }
+
+      stage('Push_Docker_Image') {
+        steps {
+          script {
+            echo "=== initialize the docker push Image ==="
+            docker.withRegistry('https://registry.hub.docker.com', 'git') {
+              app.push("${env.BUILD_NUMBER}")
+              app.push("latest")
+            }
+
+          }
+        }
+      }
+    }
+  }
